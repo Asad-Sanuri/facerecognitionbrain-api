@@ -12,10 +12,9 @@ const image = require('./controllers/image');
 const db = knex({
   client: 'pg',
   connection: {
-    host : 'postgresql-angular-17135',
-    user : 'asad',
-    password : 'admin',
-    database : 'facerecognition-brain'
+    host : process.env.DATABASE_URL,
+    ssl: true,
+    
   }
 });
 
