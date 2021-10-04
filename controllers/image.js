@@ -10,7 +10,7 @@ const app = new Clarifai.App({
 const fs = require("fs");
 
 const handleImageUpload = () =>{
-  const imageBytes = fs.readFileSync("https://face--brain.herokuapp.com/image-upload");
+  const imageBytes = fs.readFileSync('https://face--brain.herokuapp.com/image-upload');
 
   stub.PostInputs(
       {
@@ -23,7 +23,7 @@ const handleImageUpload = () =>{
           }
 
           if (response.status.code !== 10000) {
-              throw new Error("Post inputs failed, status: " + response.status.description);
+              throw new Error('Post inputs failed, status: ' + response.status.description);
           }
       }
   );
@@ -53,6 +53,7 @@ const handleImage = (req, res, db) => {
     })
     .catch(err => res.status(400).json('unable to get entries'))
   }
+  
 /* 
   const handleImageUpload = () => (req, res) => {
     console.log(req.files);
