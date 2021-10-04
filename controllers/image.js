@@ -10,7 +10,7 @@ const app = new Clarifai.App({
 const fs = require("fs");
 
 const handleImageUpload = () =>{
-  const imageBytes = fs.readFileSync("{https://face--brain.herokuapp.com/image-upload}");
+  const imageBytes = fs.readFileSync("https://face--brain.herokuapp.com/image-upload");
 
   stub.PostInputs(
       {
