@@ -7,8 +7,7 @@ const app = new Clarifai.App({
 // Insert here the initialization code as outlined on this page:
 // https://docs.clarifai.com/api-guide/api-overview/api-clients#client-installation-instructions
 
-/* const fs = require("fs");
-
+const fs = require("fs");
 const handleImageUpload = () =>{
   const imageBytes = fs.readFileSync('https://face--brain.herokuapp.com/image-upload');
 
@@ -27,7 +26,7 @@ const handleImageUpload = () =>{
           }
       }
   );
-} */
+} 
 
 const handleApiCall = (req, res) => {
    app.models
@@ -54,8 +53,7 @@ const handleImage = (req, res, db) => {
     .catch(err => res.status(400).json('unable to get entries'))
   }
 
-/* 
-  const handleImageUpload = () => (req, res) => {
+/* const handleImageUpload = () => (req, res) => {
     console.log(req.files);
     const values = Object.values(req.files);
     const promises = values.map(image => cloudinary.uploader.upload(image.path));
@@ -68,5 +66,5 @@ const handleImage = (req, res, db) => {
   module.exports = {
       handleImage,
       handleApiCall,
-      /* handleImageUpload */
+      handleImageUpload
   }
