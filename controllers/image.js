@@ -8,23 +8,26 @@ const app = new Clarifai.App({
 // https://docs.clarifai.com/api-guide/api-overview/api-clients#client-installation-instructions
 
 const fs = require("fs");
-const imageBytes = fs.readFileSync("{https://face--brain.herokuapp.com/image-upload}");
 
-stub.PostInputs(
-    {
-        inputs: [{data: {image: {base64: imageBytes}}}]
-    },
-    metadata,
-    (err, response) => {
-        if (err) {
-            throw new Error(err);
-        }
+const handleImageUpload = () =>{
+  const imageBytes = fs.readFileSync("{https://face--brain.herokuapp.com/image-upload}");
 
-        if (response.status.code !== 10000) {
-            throw new Error("Post inputs failed, status: " + response.status.description);
-        }
-    }
-);
+  stub.PostInputs(
+      {
+          inputs: [{data: {image: {base64: imageBytes}}}]
+      },
+      metadata,
+      (err, response) => {
+          if (err) {
+              throw new Error(err);
+          }
+
+          if (response.status.code !== 10000) {
+              throw new Error("Post inputs failed, status: " + response.status.description);
+          }
+      }
+  );
+}
 
 const handleApiCall = (req, res) => {
    app.models
