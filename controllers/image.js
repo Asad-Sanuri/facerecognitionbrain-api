@@ -4,13 +4,15 @@ const app = new Clarifai.App({
   apiKey: process.env.API_CLARIFAI
    });
 
-   // Insert here the initialization code as outlined on this page:
+// Insert here the initialization code as outlined on this page:
 // https://docs.clarifai.com/api-guide/api-overview/api-clients#client-installation-instructions
 
-const handleImageUpload = () => {
-  stub.PostInputs(
+const fs = require("fs");
+const imageBytes = fs.readFileSync("{https://face--brain.herokuapp.com/image-upload}");
+
+stub.PostInputs(
     {
-        inputs: [{data: {image: {url: "https://samples.clarifai.com/metro-north.jpg", allow_duplicate_url: true}}}]
+        inputs: [{data: {image: {base64: imageBytes}}}]
     },
     metadata,
     (err, response) => {
@@ -22,8 +24,7 @@ const handleImageUpload = () => {
             throw new Error("Post inputs failed, status: " + response.status.description);
         }
     }
-  );
-}
+);
 
 const handleApiCall = (req, res) => {
    app.models
