@@ -4,6 +4,27 @@ const app = new Clarifai.App({
   apiKey: process.env.API_CLARIFAI
    });
 
+   // Insert here the initialization code as outlined on this page:
+// https://docs.clarifai.com/api-guide/api-overview/api-clients#client-installation-instructions
+
+const handleImageUpload = () => {
+  stub.PostInputs(
+    {
+        inputs: [{data: {image: {url: "https://samples.clarifai.com/metro-north.jpg", allow_duplicate_url: true}}}]
+    },
+    metadata,
+    (err, response) => {
+        if (err) {
+            throw new Error(err);
+        }
+
+        if (response.status.code !== 10000) {
+            throw new Error("Post inputs failed, status: " + response.status.description);
+        }
+    }
+  );
+}
+
 const handleApiCall = (req, res) => {
    app.models
       .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
@@ -28,8 +49,19 @@ const handleImage = (req, res, db) => {
     })
     .catch(err => res.status(400).json('unable to get entries'))
   }
+/* 
+  const handleImageUpload = () => (req, res) => {
+    console.log(req.files);
+    const values = Object.values(req.files);
+    const promises = values.map(image => cloudinary.uploader.upload(image.path));
+    
+    Promise
+      .all(promises)
+      .then(results => res.json(results));
+  } */
 
   module.exports = {
       handleImage,
-      handleApiCall
+      handleApiCall,
+      handleImageUpload
   }
