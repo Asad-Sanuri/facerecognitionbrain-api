@@ -1,4 +1,6 @@
 const Clarifai = require ('clarifai');
+const fs = require('fs');
+//const path = require('path');
 
 const app = new Clarifai.App({
   apiKey: process.env.API_CLARIFAI
@@ -7,7 +9,7 @@ const app = new Clarifai.App({
 // Insert here the initialization code as outlined on this page:
 // https://docs.clarifai.com/api-guide/api-overview/api-clients#client-installation-instructions
 
-const fs = require("fs");
+
 const handleImageUpload = () =>{
   const imageBytes = fs.readFileSync('https://face--brain.herokuapp.com/image-upload');
 
@@ -27,6 +29,9 @@ const handleImageUpload = () =>{
       }
   );
 } 
+
+/* const image = path.join(__dirname, '../public/2.png')
+const file = fs.readFileSync(image, {encoding:'utf8'}) */
 
 const handleApiCall = (req, res) => {
    app.models
