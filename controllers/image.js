@@ -1,75 +1,50 @@
 const Clarifai = require ('clarifai');
-const fs = require('fs');
-//const path = require('path');
+const cloudinary = require("cloudinary");
 
 const app = new Clarifai.App({
   apiKey: process.env.API_CLARIFAI
    });
 
-// Insert here the initialization code as outlined on this page:
-// https://docs.clarifai.com/api-guide/api-overview/api-clients#client-installation-instructions
-
-
-const handleImageUpload = (req, res) =>{
-  const imageBytes = fs.readFileSync('https://face--brain.herokuapp.com/image-upload');
-
-  stub.PostInputs(
-      {
-          inputs: [{data: {image: {base64: imageBytes}}}]
-      },
-      metadata,
-      (err, res) => {
-          if (err) {
-              throw new Error(err);
-          }
-
-          if (response.status.code !== 10000) {
-              throw new Error('Post inputs failed, status: ' + res.status.description);
-          }
-      }
-  );
-} 
-
-/* const image = path.join(__dirname, '../public/2.png')
-const file = fs.readFileSync(image, {encoding:'utf8'}) */
-
 const handleApiCall = (req, res) => {
-   app.models
-      .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
-      .then(data => {
-        res.json(data);
-      })
-      .catch(err => res.status(400).json('unable to work with API'))
-    }
+  app.models
+    .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => res.status(400).json('unable to work with API'))
+  }
 
 const handleImage = (req, res, db) => {
-    const { id } = req.body;
-    db('users').where('id', '=', id)
-    .increment('entries', 1)
-    .returning('entries')
-    .then(entries => {
-      if(entries.length){
-        res.json(entries[0]);
-      } else {
-        res.status(400).json("unable to get entries of user with id = " + id);        
-      }
-      
-    })
-    .catch(err => res.status(400).json('unable to get entries'))
-  }
+  const { id } = req.body;
+  db('users').where('id', '=', id)
+  .increment('entries', 1)
+  .returning('entries')
+  .then(entries => {
+    if(entries.length){
+      res.json(entries[0]);
+    } else {
+      res.status(400).json("unable to get entries of user with id = " + id);        
+    }      
+  })
+  .catch(err => res.status(400).json('unable to get entries'))
+}
 
-/* const handleImageUpload = () => (req, res) => {
-    console.log(req.files);
-    const values = Object.values(req.files);
-    const promises = values.map(image => cloudinary.uploader.upload(image.path));
-    
-    Promise
-      .all(promises)
-      .then(results => res.json(results));
-  } */
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
-  module.exports = {
-      handleImage,
-      handleApiCall,
-      handleImageUpload
-  }
+const handleImageUpload = () => (req, res) => {
+  console.log(req.files);
+  const values = Object.values(req.files);
+  const promises = values.map(image => cloudinary.v2.uploader.upload(image.path));
+  Promise.all(promises)
+          .then(results => res.json(results));
+} 
+
+module.exports = {
+    handleImage,
+    handleApiCall,
+    handleImageUpload
+}
