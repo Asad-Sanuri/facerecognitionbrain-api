@@ -1,5 +1,5 @@
 const Clarifai = require ('clarifai');
-const cloudinary = require("cloudinary");
+const cloudinary = require('cloudinary');
 
 const app = new Clarifai.App({
   apiKey: process.env.API_CLARIFAI
