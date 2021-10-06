@@ -10,7 +10,7 @@ const app = new Clarifai.App({
 // https://docs.clarifai.com/api-guide/api-overview/api-clients#client-installation-instructions
 
 
-const handleImageUpload = () =>{
+const handleImageUpload = (req, res) =>{
   const imageBytes = fs.readFileSync('https://face--brain.herokuapp.com/image-upload');
 
   stub.PostInputs(
@@ -18,13 +18,13 @@ const handleImageUpload = () =>{
           inputs: [{data: {image: {base64: imageBytes}}}]
       },
       metadata,
-      (err, response) => {
+      (err, res) => {
           if (err) {
               throw new Error(err);
           }
 
           if (response.status.code !== 10000) {
-              throw new Error('Post inputs failed, status: ' + response.status.description);
+              throw new Error('Post inputs failed, status: ' + res.status.description);
           }
       }
   );
