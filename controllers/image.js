@@ -1,5 +1,5 @@
 const Clarifai = require ('clarifai');
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 
 const app = new Clarifai.App({
   apiKey: process.env.API_CLARIFAI
@@ -33,13 +33,13 @@ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME, 
   api_key: process.env.CLOUDINARY_API_KEY, 
   api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: True
+  secure: true
 });
 
 const handleImageUpload = () => (req, res) => {
   console.log(req.files);
   const values = Object.values(req.files);
-  const promises = values.map(image => cloudinary.v2.uploader.upload(image.path));
+  const promises = values.map(image => cloudinary.uploader.upload(image.path));
   Promise.all(promises)
           .then(results => res.json(results));
 } 
