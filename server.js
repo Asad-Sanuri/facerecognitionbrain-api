@@ -13,10 +13,8 @@ const image = require('./controllers/image');
 const app = express();
 app.use(bodyParser.json());
 app.use(
-  cors({
-    origin: "*",
-  })
-)
+  cors()
+);
 app.use(formData.parse());
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; 
